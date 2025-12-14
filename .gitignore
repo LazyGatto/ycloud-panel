@@ -1,0 +1,28 @@
+# Logs and runtime data
+logs/
+data/
+
+# Node/Next artifacts
+node_modules/
+.next/
+web/.next/
+*.tsbuildinfo
+
+# Environment/config secrets
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# Keys and certificates
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+
+# Local helpers
+*.sh
