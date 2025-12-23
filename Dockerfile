@@ -1,5 +1,8 @@
-FROM node:18-alpine AS base
+FROM node:20-bullseye-slim AS base
 WORKDIR /app
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 COPY . .
