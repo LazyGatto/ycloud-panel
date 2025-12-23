@@ -59,7 +59,7 @@ EOF
 echo "Credentials:"
 grep -E '^(BASIC_AUTH_USER|BASIC_AUTH_PASS)=' .env
 
-docker-compose up -d
+docker compose up -d
 ```
 
 **Вариант 2 — docker run**
