@@ -517,7 +517,7 @@ function Page() {
   async function loadVmLogs(vmId: string, limit = 40) {
     setLogLoading(true);
     try {
-      const res = await fetch(`/api/logs?jobId=vm-monitor-${vmId}&limit=${limit}`);
+      const res = await fetch(`/api/logging?jobId=vm-monitor-${vmId}&limit=${limit}`);
       const data = await res.json();
       if (res.ok) {
         setLogModalEntries(data.logs ?? []);
@@ -779,7 +779,7 @@ function Page() {
   }
 
   function subscribeLogs() {
-    const es = new EventSource("/api/logs/stream");
+    const es = new EventSource("/api/logging/stream");
     es.onmessage = (ev) => {
       try {
         const payload = JSON.parse(ev.data) as LogRecord[];
