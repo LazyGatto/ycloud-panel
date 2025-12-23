@@ -1,7 +1,7 @@
 FROM node:20-bullseye-slim AS base
 WORKDIR /app
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 make g++ \
+  && apt-get install -y --no-install-recommends python3 make g++ iputils-ping \
   && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
