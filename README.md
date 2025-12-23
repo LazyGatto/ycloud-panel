@@ -19,7 +19,7 @@ npm install
 npm run dev:web
 ```
 
-Приложение поднимется на `http://localhost:3000`.
+Приложение поднимется на `http://localhost:3009`.
 
 ### Сборка/прод (локально)
 
@@ -31,7 +31,7 @@ npm install
 NODE_ENV=production npm run build:web
 
 # запуск собранного приложения
-PORT=3000 \
+PORT=3009 \
 SESSION_SECRET=change-me \
 BASIC_AUTH_USER=admin \
 BASIC_AUTH_PASS=admin \
@@ -41,13 +41,47 @@ npm run start:web
 
 Хранилище и логи пишутся в `data/` и `logs/` (директории должны быть доступны на запись). При необходимости можно переопределить пути через `CONFIG_PATH`/`DB_PATH`.
 
-### Docker
+### Docker (GHCR)
+
+**Вариант 1 — docker-compose + .env**
 
 ```bash
-docker-compose up --build -d
+wget https://raw.githubusercontent.com/LazyGatto/ycloud-panel/main/docker-compose.yml
+
+cat > .env <<EOF
+PORT=3009
+BASIC_AUTH_USER=admin
+BASIC_AUTH_PASS=$(openssl rand -hex 16)
+SESSION_SECRET=$(openssl rand -hex 32)
+SESSION_TTL_SECONDS=86400
+EOF
+
+echo "Credentials:"
+grep -E '^(BASIC_AUTH_USER|BASIC_AUTH_PASS)=' .env
+
+docker-compose up -d
 ```
 
-Используются переменные из `docker-compose.yml` (`PORT`, `BASIC_AUTH_USER/PASS`, `SESSION_SECRET`, `SESSION_TTL_SECONDS`).
+**Вариант 2 — docker run**
+
+```bash
+BASIC_AUTH_USER=admin
+BASIC_AUTH_PASS="$(openssl rand -hex 16)"
+SESSION_SECRET="$(openssl rand -hex 32)"
+
+docker pull ghcr.io/lazygatto/ycloud-panel:latest
+
+docker run -d --name ycloud-panel \
+  -p 3009:3009 \
+  -e PORT=3009 \
+  -e BASIC_AUTH_USER="${BASIC_AUTH_USER}" \
+  -e BASIC_AUTH_PASS="${BASIC_AUTH_PASS}" \
+  -e SESSION_SECRET="${SESSION_SECRET}" \
+  -e SESSION_TTL_SECONDS=86400 \
+  -v "$(pwd)/data:/app/data" \
+  -v "$(pwd)/logs:/app/logs" \
+  ghcr.io/lazygatto/ycloud-panel:latest
+```
 
 ### Скриншоты
 

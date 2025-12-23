@@ -1,11 +1,11 @@
 version: "3.9"
 services:
   app:
-    build: .
+    image: ghcr.io/lazygatto/ycloud-panel:latest
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-3009}:${PORT:-3009}"
     environment:
-      PORT: 3000
+      PORT: ${PORT:-3009}
       BASIC_AUTH_USER: ${BASIC_AUTH_USER:-admin}
       BASIC_AUTH_PASS: ${BASIC_AUTH_PASS:-admin}
       SESSION_SECRET: ${SESSION_SECRET:-dev-secret}
